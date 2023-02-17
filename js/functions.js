@@ -1,37 +1,28 @@
-function getStringLength (string, length) {
-  string += '';
-  return string.length <= length ? 'true - строка проходит по длине' : 'false - строка не проходит по длине';
+function getStringLength (stringValue, maxLength) {
+  return String(stringValue).length <= maxLength;
 }
 
-getStringLength(true, 4);
+getStringLength('five', 4);
 
-function isPalindrome (string) {
-  string += '';
+function isPalindrome (stringValue) {
+  stringValue = String(stringValue);
+  stringValue = stringValue.toLowerCase();
+  stringValue = stringValue.replaceAll(' ', '');
   let inverseString = '';
-  string = string.toLowerCase();
-  string = string.replaceAll(' ', '');
-  for (let i = string.length - 1; i >= 0; i--) {
-    inverseString = inverseString + string[i];
+  for (let i = stringValue.length - 1; i >= 0; i--) {
+    inverseString = inverseString + stringValue[i];
   }
-  string = inverseString ? 'true - строка является палиндромом' : 'false - это не палиндром';
-  return string;
+  return stringValue === inverseString;
 }
 
-isPalindrome('anna');
+isPalindrome('cannac');
 
-function findNumber (string) {
-  if (typeof(string) === 'number') {
-    if (string < 0) {
-      string = -string;
-    }
-    string = string.toFixed();
-    return string;
-  }
-  string = parseInt(string.replace(/[^\d]/g, ''), 10);
-  return string;
+function findNumber (stringValue) {
+  stringValue = parseInt(String(stringValue).replace(/[^\d]/g, ''), 10);
+  return stringValue;
 }
 
-findNumber('ECMAScript 2022');
+findNumber('0 hello 123 gkdfdkffk443');
 
 function addSymbol (string, length, symbol) {
   while (string.length < length) {
