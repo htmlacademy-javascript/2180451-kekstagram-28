@@ -72,4 +72,5 @@ const photoDescription = () => {
   };
 };
 
-const similarPhotoDescription = Array.from({length: 25}, photoDescription);
+const similarPhotoDescription = () => Array.from({length: 25}, photoDescription);
+similarPhotoDescription();
