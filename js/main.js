@@ -10,8 +10,9 @@ const COMMENTS = [
 const NAMES = ['Алексей', 'Артем', 'Жанна', 'Ирина', 'Ксения', 'Александр', 'Павел', 'Константин', 'Марина', 'Мария', 'Сергей', 'Анна', 'Анастасия', 'Белла', 'Полина', 'Эльвира', 'Юлия', 'Дмитрий', 'Екатерина', 'Евгений', 'Кирилл', 'Наталья', 'Оксана', 'Софья', 'Руслан', 'Артур', 'Глеб', 'Виктория'];
 
 const PHOTO_DESCRIPTIONS = ['Крутой отель с отличным пляжем', 'Указатель на пляж', 'Красивый пляж', 'На оценочку))', 'Милая подача блюд', 'Крутая тачка', 'Красота минимализма', 'Вкуснейший компотик', 'Ловим пролетающий самолет', 'Удобная выджвиная полка для обуви', 'Замечательный день для похода на море', 'Взорванная ауди', 'Непонятное блюдо', 'Кото-суши', 'Домашние тапочки из будущего', '5 секунд, полет нормальный', 'Хор', 'Раритетная машина', 'Тапочки для ночных обжор', 'Площадка с пальмами', 'Вкусный салатик', 'Красивый закат на фоне моря', 'Я крабик, клац-клац', 'Рамштайн отжигают', 'Опасное сафари'];
-const photoId = getRandomId(1, 25);
-const generatedCommentId = getRandomId(1, 1000);
+const photoId = getRandomValue(1, 25);
+const photoUrl = getRandomValue(1, 25);
+const generatedCommentId = getRandomValue(1, 1000);
 
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -20,35 +21,19 @@ const getRandomInteger = (a, b) => {
   return Math.floor(result);
 };
 
-function getRandomId (min, max) {
-  const previousId = [];
+function getRandomValue (min, max) {
+  const previousValue = [];
 
   return function () {
-    let currentId = getRandomInteger(min, max);
-    if (previousId.length >= (max - min + 1)) {
+    let currentValue = getRandomInteger(min, max);
+    if (previousValue.length >= (max - min + 1)) {
       return null;
     }
-    while (previousId.includes(currentId)) {
-      currentId = getRandomInteger(min, max);
+    while (previousValue.includes(currentValue)) {
+      currentValue = getRandomInteger(min, max);
     }
-    previousId.push(currentId);
-    return currentId;
-  };
-}
-
-function getRandomUrl (min, max) {
-  const previousUrl = [];
-
-  return function () {
-    let currentUrl = getRandomInteger(min, max);
-    if (previousUrl.length >= (max - min + 1)) {
-      return null;
-    }
-    while (previousUrl.includes(currentUrl)) {
-      currentUrl = getRandomInteger(min, max);
-    }
-    previousUrl.push(currentUrl);
-    return currentUrl;
+    previousValue.push(currentValue);
+    return currentValue;
   };
 }
 
@@ -61,8 +46,7 @@ function commentsGenerator () {
   };
 }
 
-const photoDescription = () => {
-  const photoUrl = getRandomUrl(1, 25);
+function photoDescription () {
   return {
     id: photoId(),
     url: `photos/${photoUrl()}.jpg`,
@@ -70,7 +54,7 @@ const photoDescription = () => {
     likes: getRandomInteger(15, 200),
     comments: commentsGenerator()
   };
-};
+}
 
 const similarPhotoDescription = () => Array.from({length: 25}, photoDescription);
 similarPhotoDescription();
