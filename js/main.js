@@ -60,4 +60,4 @@ function photoDescription () {
 }
 
 const photoDescriptionArray = () => Array.from({length: DESCRIPTIONS_COUNT}, photoDescription);
-console.log(photoDescriptionArray());
+photoDescriptionArray();
