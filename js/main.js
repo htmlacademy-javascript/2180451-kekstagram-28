@@ -1,3 +1,5 @@
+import './data.js';
 import {photoDescriptionArray} from './data.js';
 
-photoDescriptionArray();
+const descriptionData = photoDescriptionArray();
+export {descriptionData};

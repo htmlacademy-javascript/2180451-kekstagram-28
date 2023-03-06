@@ -15,6 +15,8 @@ const URL_MIN = 1;
 const URL_MAX = 25;
 const COMMENT_ID_MIN = 1;
 const COMMENT_ID_MAX = 1000;
+const COMMENT_COUNT_MIN = 1;
+const COMMENT_COUNT_MAX = 5;
 const DESCRIPTIONS_COUNT = 25;
 const photoId = getRandomValue(ID_MIN, ID_MAX);
 const photoUrl = getRandomValue(URL_MIN, URL_MAX);
@@ -29,13 +31,16 @@ function commentsGenerator () {
   };
 }
 
+const commentsArray = () => Array.from({length: getRandomInteger(COMMENT_COUNT_MIN, COMMENT_COUNT_MAX)
+}, commentsGenerator);
+
 function photoDescription () {
   return {
     id: photoId(),
     url: `photos/${photoUrl()}.jpg`,
     description: `${PHOTO_DESCRIPTIONS[getRandomInteger(0, PHOTO_DESCRIPTIONS.length - 1)]}`,
     likes: getRandomInteger(LIKES_MIN_COUNT, LIKES_MAX_COUNT),
-    comments: commentsGenerator()
+    comments: commentsArray()
   };
 }
 
