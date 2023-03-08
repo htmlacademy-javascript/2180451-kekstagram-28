@@ -1,9 +1,8 @@
-import {descriptionData} from './main.js';
 const picContainer = document.querySelector('.pictures');
 const picTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const similarDescriptionsFragment = document.createDocumentFragment();
 
-export function createElements() {
+export function createElements(descriptionData) {
   descriptionData.forEach((dataItem) => {
     const picElement = picTemplate.cloneNode(true);
     picElement.querySelector('.picture__img').src = dataItem.url;
@@ -11,6 +10,6 @@ export function createElements() {
     picElement.querySelector('.picture__comments').textContent = dataItem['comments'].length;
     similarDescriptionsFragment.append(picElement);
   });
-}
 
-export {picContainer, similarDescriptionsFragment};
+  picContainer.append(similarDescriptionsFragment);
+}
