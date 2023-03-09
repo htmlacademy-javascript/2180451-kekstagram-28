@@ -37,6 +37,7 @@ function onPhotoClick (evt) {
     photoCaption.textContent = currentDescription.description;
     commentsCount.classList.add('hidden');
     moreComments.classList.add('hidden');
+    document.body.classList.add('modal-open');
 
     clearComments();
     createComment(currentDescription.comments, commentsContainer);
@@ -52,10 +53,12 @@ function closePhoto () {
 
 closeBigPicture.addEventListener('click', () => {
   closePhoto();
+  document.body.classList.remove('modal-open');
 });
 
 closeBigPicture.addEventListener('keydown', (evt) => {
   if (isEnterKey(evt)) {
     closePhoto();
   }
+  document.body.classList.remove('modal-open');
 });
