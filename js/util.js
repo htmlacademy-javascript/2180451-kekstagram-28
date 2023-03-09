@@ -21,6 +21,31 @@ export function getRandomValue (min, max) {
   };
 }
 
+export const isEscapeKey = (evt) => evt.key === 'Escape';
+export const isEnterKey = (evt) => evt.key === 'Enter';
+
+const makeElement = function (tagName, className, text) {
+  const element = document.createElement(tagName);
+  element.classList.add(className);
+  if (text) {
+    element.textContent = text;
+  }
+  return element;
+};
+
+export const createComment = function (arr, container) {
+  arr.forEach((item) => {
+    const listItem = makeElement('li', 'social__comment');
+    const picture = makeElement('img', 'social__picture');
+    picture.src = item.avatar;
+    picture.alt = item.name;
+    listItem.appendChild(picture);
+    const commentText = makeElement('p', 'social__text', item.message);
+    listItem.appendChild(commentText);
+    container.appendChild(listItem);
+  });
+};
+
 const getStringLength = (stringValue, maxLength) => String(stringValue).length <= maxLength;
 
 getStringLength('five', 4);
