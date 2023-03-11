@@ -5,7 +5,7 @@ export const getRandomInteger = (a, b) => {
   return Math.floor(result);
 };
 
-export function getRandomValue (min, max) {
+export const getRandomValue = (min, max) => {
   const previousValue = [];
 
   return function () {
@@ -19,7 +19,32 @@ export function getRandomValue (min, max) {
     previousValue.push(currentValue);
     return currentValue;
   };
-}
+};
+
+export const isEscapeKey = (evt) => evt.key === 'Escape';
+export const isEnterKey = (evt) => evt.key === 'Enter';
+
+const makeElement = (tagName, className, text) => {
+  const element = document.createElement(tagName);
+  element.classList.add(className);
+  if (text) {
+    element.textContent = text;
+  }
+  return element;
+};
+
+export const createComment = (arr, container) => {
+  arr.forEach((item) => {
+    const listItem = makeElement('li', 'social__comment');
+    const picture = makeElement('img', 'social__picture');
+    picture.src = item.avatar;
+    picture.alt = item.name;
+    listItem.appendChild(picture);
+    const commentText = makeElement('p', 'social__text', item.message);
+    listItem.appendChild(commentText);
+    container.appendChild(listItem);
+  });
+};
 
 const getStringLength = (stringValue, maxLength) => String(stringValue).length <= maxLength;
 
@@ -33,7 +58,7 @@ const findNumber = (stringValue) => parseInt(String(stringValue).replace(/[^\d]/
 
 findNumber('0 hello 123 gkdfdkffk443');
 
-function addSymbol (string, length, symbol) {
+const addSymbol = (string, length, symbol) => {
   while (string.length < length) {
     if (symbol.length <= length - string.length) {
       string = symbol + string;
@@ -41,7 +66,7 @@ function addSymbol (string, length, symbol) {
     string = symbol.slice(0, length - string.length) + string;
   }
   return string;
-}
+};
 
 addSymbol('horse', 14, 'white');
 

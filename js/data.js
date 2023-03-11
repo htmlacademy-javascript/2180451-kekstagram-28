@@ -22,26 +22,22 @@ const photoId = getRandomValue(ID_MIN, ID_MAX);
 const photoUrl = getRandomValue(URL_MIN, URL_MAX);
 const commentId = getRandomValue(COMMENT_ID_MIN, COMMENT_ID_MAX);
 
-function commentsGenerator () {
-  return {
-    id: commentId(),
-    avatar: `img/avatar-${getRandomInteger(AVATAR_MIN_COUNT, AVATAR_MAX_COUNT)}.svg`,
-    message: `${COMMENTS[getRandomInteger(0, COMMENTS.length - 1)]}`,
-    name: `${NAMES[getRandomInteger(0, NAMES.length - 1)]}`
-  };
-}
+const commentsGenerator = () => ({
+  id: commentId(),
+  avatar: `img/avatar-${getRandomInteger(AVATAR_MIN_COUNT, AVATAR_MAX_COUNT)}.svg`,
+  message: `${COMMENTS[getRandomInteger(0, COMMENTS.length - 1)]}`,
+  name: `${NAMES[getRandomInteger(0, NAMES.length - 1)]}`
+});
 
 const commentsArray = () => Array.from({length: getRandomInteger(COMMENT_COUNT_MIN, COMMENT_COUNT_MAX)
 }, commentsGenerator);
 
-function photoDescription () {
-  return {
-    id: photoId(),
-    url: `photos/${photoUrl()}.jpg`,
-    description: `${PHOTO_DESCRIPTIONS[getRandomInteger(0, PHOTO_DESCRIPTIONS.length - 1)]}`,
-    likes: getRandomInteger(LIKES_MIN_COUNT, LIKES_MAX_COUNT),
-    comments: commentsArray()
-  };
-}
+const photoDescription = () => ({
+  id: photoId(),
+  url: `photos/${photoUrl()}.jpg`,
+  description: `${PHOTO_DESCRIPTIONS[getRandomInteger(0, PHOTO_DESCRIPTIONS.length - 1)]}`,
+  likes: getRandomInteger(LIKES_MIN_COUNT, LIKES_MAX_COUNT),
+  comments: commentsArray()
+});
 
 export const photoDescriptionArray = () => Array.from({length: DESCRIPTIONS_COUNT}, photoDescription);
