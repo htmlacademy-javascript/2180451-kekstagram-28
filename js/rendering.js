@@ -2,7 +2,7 @@ const picContainer = document.querySelector('.pictures');
 const picTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const similarDescriptionsFragment = document.createDocumentFragment();
 
-export function createElements(descriptionData) {
+export const createElements = (descriptionData) => {
   descriptionData.forEach((dataItem) => {
     const picElement = picTemplate.cloneNode(true);
     picElement.querySelector('.picture__img').src = dataItem.url;
@@ -14,4 +14,4 @@ export function createElements(descriptionData) {
   });
 
   picContainer.append(similarDescriptionsFragment);
-}
+};

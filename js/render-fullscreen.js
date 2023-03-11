@@ -1,6 +1,5 @@
-import {isEscapeKey, isEnterKey} from './util.js';
+import {isEscapeKey, isEnterKey, createComment} from './util.js';
 import {descriptionData} from './main.js';
-import {createComment} from './util.js';
 const picContainer = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
@@ -26,7 +25,7 @@ const clearComments = () => {
   }
 };
 
-function onPhotoClick (evt) {
+const onPhotoClick = (evt) => {
   if (evt.target.closest('.picture')) {
     const target = evt.target.closest('.picture');
     const currentDescription = descriptionData.find((item) => item.id === Number(target.dataset.id));
@@ -43,14 +42,14 @@ function onPhotoClick (evt) {
     clearComments();
     createComment(currentDescription.comments, commentsContainer);
   }
-}
+};
 
 picContainer.addEventListener('click', onPhotoClick);
 
-function closePhoto () {
+const closePhoto = () => {
   bigPicture.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
-}
+};
 
 closeBigPicture.addEventListener('click', () => {
   closePhoto();
