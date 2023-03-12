@@ -10,7 +10,7 @@ const commentsContainer = bigPicture.querySelector('.social__comments');
 const photoCaption = bigPicture.querySelector('.social__caption');
 const commentsCount = bigPicture.querySelector('.social__comment-count');
 const loadCommentsButton = bigPicture.querySelector('.comments-loader');
-const commentShowCount = 5;
+const COMMENT_SHOW_COUNT = 5;
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -37,11 +37,11 @@ const showComments = (arr, count) => {
 const loadComments = () => {
   const hiddenComments = commentsContainer.querySelectorAll('.hidden');
 
-  if (hiddenComments.length > commentShowCount) {
-    showComments(hiddenComments, commentShowCount);
+  if (hiddenComments.length > COMMENT_SHOW_COUNT) {
+    showComments(hiddenComments, COMMENT_SHOW_COUNT);
   }
-  if (hiddenComments.length <= commentShowCount) {
-    showComments(hiddenComments, commentShowCount);
+  if (hiddenComments.length <= COMMENT_SHOW_COUNT) {
+    showComments(hiddenComments, hiddenComments.length);
     loadCommentsButton.classList.add('hidden');
   }
 };
