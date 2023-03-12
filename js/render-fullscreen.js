@@ -10,6 +10,7 @@ const commentsContainer = bigPicture.querySelector('.social__comments');
 const photoCaption = bigPicture.querySelector('.social__caption');
 const commentsCount = bigPicture.querySelector('.social__comment-count');
 const loadCommentsButton = bigPicture.querySelector('.comments-loader');
+const commentShowCount = 5;
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -26,20 +27,21 @@ const clearComments = () => {
   }
 };
 
+const showComments = (arr, count) => {
+  for (let i = 0; i < count; i++) {
+    arr[i].classList.remove('hidden');
+  }
+  commentsCount.textContent = `${commentsContainer.children.length - commentsContainer.querySelectorAll('.hidden').length} из ${commentsContainer.children.length} комментариев`;
+};
+
 const loadComments = () => {
   const hiddenComments = commentsContainer.querySelectorAll('.hidden');
 
-  if (hiddenComments.length > 5) {
-    for (let i = 0; i < 5; i++) {
-      hiddenComments[i].classList.remove('hidden');
-    }
-    commentsCount.textContent = `${commentsContainer.children.length - commentsContainer.querySelectorAll('.hidden').length} из ${commentsContainer.children.length} комментариев`;
+  if (hiddenComments.length > commentShowCount) {
+    showComments(hiddenComments, commentShowCount);
   }
-  if (hiddenComments.length <= 5) {
-    for (let i = 0; i < hiddenComments.length; i++) {
-      hiddenComments[i].classList.remove('hidden');
-    }
-    commentsCount.textContent = `${commentsContainer.children.length - commentsContainer.querySelectorAll('.hidden').length} из ${commentsContainer.children.length} комментариев`;
+  if (hiddenComments.length <= commentShowCount) {
+    showComments(hiddenComments, commentShowCount);
     loadCommentsButton.classList.add('hidden');
   }
 };
