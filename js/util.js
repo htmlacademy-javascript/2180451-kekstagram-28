@@ -36,6 +36,7 @@ const makeElement = (tagName, className, text) => {
 export const createComment = (arr, container) => {
   arr.forEach((item) => {
     const listItem = makeElement('li', 'social__comment');
+    listItem.classList.add('hidden');
     const picture = makeElement('img', 'social__picture');
     picture.src = item.avatar;
     picture.alt = item.name;
