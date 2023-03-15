@@ -1,6 +1,6 @@
 import {isEscapeKey, isEnterKey, createComment} from './util.js';
 import {descriptionData} from './main.js';
-const picContainer = document.querySelector('.pictures');
+import { picContainer } from './rendering.js';
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
@@ -73,6 +73,9 @@ loadCommentsButton.addEventListener('click', () => {
 const closePhoto = () => {
   bigPicture.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
+  loadCommentsButton.removeEventListener('click', () => {
+    loadComments();
+  });
 };
 
 closeBigPicture.addEventListener('click', () => {
