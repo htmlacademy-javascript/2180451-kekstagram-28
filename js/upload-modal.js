@@ -58,7 +58,7 @@ imgUpload.addEventListener('change', showRedactor);
 const closeRedactor = () => {
   imgOverlay.classList.add('hidden');
   document.removeEventListener('keydown', onDocKeydown);
-  imgUpload.removeEventListener('change', showRedactor);
+  inputFile.value = '';
   inputsInactive();
 };
 

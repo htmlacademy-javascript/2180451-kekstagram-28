@@ -1,4 +1,7 @@
 import {imgUploadForm} from './upload-modal.js';
+const HASHTAG = /^#[a-zа-я0-9]{1,19}$/i;
+const HASHTAG_MAX_COUNT = 5;
+const COMMENT_MAX_LENGTH = 140;
 
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__text',
@@ -10,19 +13,11 @@ const pristine = new Pristine(imgUploadForm, {
 });
 
 function validateHashtag (value) {
-  const HASHTAG = /^#[a-zа-я0-9]{1,19}$/i;
   const hashArray = value.split(' ');
-  return hashArray.every((hashtag) => HASHTAG.test(hashtag));
+  return !value.length ? true : hashArray.every((hashtag) => HASHTAG.test(hashtag));
 }
 
-// function validateHashtagSpaces (value) {
-//   const HASHTAG = /^#[a-zа-я0-9]{1,19}$/i;
-//   const hashArray = value.split(' ');
-//   return hashArray.every((hashtag) => HASHTAG.test(hashtag));
-// }
-
 function validateHashtagCount (value) {
-  const HASHTAG_MAX_COUNT = 5;
   const hashArray = value.split(' ');
   return hashArray.length <= HASHTAG_MAX_COUNT;
 }
@@ -34,7 +29,6 @@ function validateHashtagDublicates (value) {
 }
 
 function validateComment (value) {
-  const COMMENT_MAX_LENGTH = 140;
   return value.length <= COMMENT_MAX_LENGTH;
 }
 
@@ -63,6 +57,7 @@ pristine.addValidator(
 );
 
 imgUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
+  if (!pristine.validate()) {
+    evt.preventDefault();
+  }
 });
