@@ -1,6 +1,6 @@
 import {isEscapeKey, isEnterKey, createComment} from './util.js';
 import {descriptionData} from './main.js';
-const picContainer = document.querySelector('.pictures');
+import { picContainer } from './rendering.js';
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
@@ -57,6 +57,7 @@ const onPhotoClick = (evt) => {
     bigPictureComments.textContent = currentDescription.comments.length;
     photoCaption.textContent = currentDescription.description;
     document.body.classList.add('modal-open');
+    loadCommentsButton.addEventListener('click', loadComments);
 
     clearComments();
     createComment(currentDescription.comments, commentsContainer);
@@ -66,13 +67,10 @@ const onPhotoClick = (evt) => {
 
 picContainer.addEventListener('click', onPhotoClick);
 
-loadCommentsButton.addEventListener('click', () => {
-  loadComments();
-});
-
 const closePhoto = () => {
   bigPicture.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
+  loadCommentsButton.removeEventListener('click', loadComments);
 };
 
 closeBigPicture.addEventListener('click', () => {
