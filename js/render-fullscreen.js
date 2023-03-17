@@ -57,6 +57,7 @@ const onPhotoClick = (evt) => {
     bigPictureComments.textContent = currentDescription.comments.length;
     photoCaption.textContent = currentDescription.description;
     document.body.classList.add('modal-open');
+    loadCommentsButton.addEventListener('click', loadComments);
 
     clearComments();
     createComment(currentDescription.comments, commentsContainer);
@@ -66,16 +67,10 @@ const onPhotoClick = (evt) => {
 
 picContainer.addEventListener('click', onPhotoClick);
 
-loadCommentsButton.addEventListener('click', () => {
-  loadComments();
-});
-
 const closePhoto = () => {
   bigPicture.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
-  loadCommentsButton.removeEventListener('click', () => {
-    loadComments();
-  });
+  loadCommentsButton.removeEventListener('click', loadComments);
 };
 
 closeBigPicture.addEventListener('click', () => {
