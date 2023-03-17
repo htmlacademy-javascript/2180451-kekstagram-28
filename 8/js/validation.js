@@ -23,8 +23,7 @@ function validateHashtagCount (value) {
 }
 
 function validateHashtagDublicates (value) {
-  value = value.toLowerCase();
-  const hashArray = value.split(' ');
+  const hashArray = value.toLowerCase().split(' ');
   return new Set(hashArray).size === hashArray.length;
 }
 

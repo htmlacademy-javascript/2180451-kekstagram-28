@@ -1,4 +1,4 @@
-import {isEscapeKey, isEnterKey} from './util.js';
+import {isEscapeKey} from './util.js';
 export const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUpload = imgUploadForm.querySelector('#upload-file');
 const imgOverlay = imgUploadForm.querySelector('.img-upload__overlay');
@@ -13,44 +13,35 @@ const onDocKeydown = (evt) => {
     evt.preventDefault();
     imgOverlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
+    inputFile.value = '';
   }
+  removeInputListener();
 };
 
-const inputsActive = () => {
-  hashtagInput.addEventListener('focus', () => {
-    document.removeEventListener('keydown', onDocKeydown);
-  });
-  hashtagInput.addEventListener('blur', () => {
-    document.addEventListener('keydown', onDocKeydown);
-  });
-  commentInput.addEventListener('focus', () => {
-    document.removeEventListener('keydown', onDocKeydown);
-  });
-  commentInput.addEventListener('blur', () => {
-    document.addEventListener('keydown', onDocKeydown);
-  });
+const inputInFocus = () => {
+  document.removeEventListener('keydown', onDocKeydown);
 };
-
-const inputsInactive = () => {
-  hashtagInput.removeEventListener('focus', () => {
-    document.removeEventListener('keydown', onDocKeydown);
-  });
-  hashtagInput.removeEventListener('blur', () => {
-    document.addEventListener('keydown', onDocKeydown);
-  });
-  commentInput.removeEventListener('focus', () => {
-    document.removeEventListener('keydown', onDocKeydown);
-  });
-  commentInput.removeEventListener('blur', () => {
-    document.addEventListener('keydown', onDocKeydown);
-  });
+const inputOutFocus = () => {
+  document.addEventListener('keydown', onDocKeydown);
 };
+const addInputListener = () => {
+  hashtagInput.addEventListener('focus', inputInFocus);
+  commentInput.addEventListener('focus', inputInFocus);
+  hashtagInput.addEventListener('blur', inputOutFocus);
+  commentInput.addEventListener('blur', inputOutFocus);
+};
+function removeInputListener () {
+  hashtagInput.removeEventListener('focus', inputInFocus);
+  commentInput.removeEventListener('focus', inputInFocus);
+  hashtagInput.removeEventListener('blur', inputOutFocus);
+  commentInput.removeEventListener('blur', inputOutFocus);
+}
 
 const showRedactor = () => {
   imgOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onDocKeydown);
   document.body.classList.add('modal-open');
-  inputsActive();
+  addInputListener();
 };
 
 imgUpload.addEventListener('change', showRedactor);
@@ -59,7 +50,7 @@ const closeRedactor = () => {
   imgOverlay.classList.add('hidden');
   document.removeEventListener('keydown', onDocKeydown);
   inputFile.value = '';
-  inputsInactive();
+  removeInputListener();
 };
 
 imgUploadCancel.addEventListener('click', () => {
@@ -67,10 +58,4 @@ imgUploadCancel.addEventListener('click', () => {
   document.body.classList.remove('modal-open');
 });
 
-imgUploadCancel.addEventListener('keydown', (evt) => {
-  if (isEnterKey(evt)) {
-    closeRedactor();
-  }
-  document.body.classList.remove('modal-open');
-  inputsInactive();
-});
+imgUploadCancel.addEventListener('keydown', onDocKeydown);
