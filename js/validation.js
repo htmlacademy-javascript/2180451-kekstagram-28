@@ -1,5 +1,5 @@
 import {imgUploadForm} from './upload-modal.js';
-const HASHTAG = /^#[a-zа-я0-9]{1,19}$/i;
+const HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_MAX_COUNT = 5;
 const COMMENT_MAX_LENGTH = 140;
 

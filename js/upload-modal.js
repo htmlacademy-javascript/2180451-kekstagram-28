@@ -1,4 +1,5 @@
 import {isEscapeKey} from './util.js';
+import {filterTypeChange} from './slider.js';
 export const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUpload = imgUploadForm.querySelector('#upload-file');
 const imgOverlay = imgUploadForm.querySelector('.img-upload__overlay');
@@ -6,7 +7,8 @@ const imgUploadCancel = imgUploadForm.querySelector('.img-upload__cancel');
 const hashtagInput = imgUploadForm.querySelector('.text__hashtags');
 const commentInput = imgUploadForm.querySelector('.text__description');
 const inputFile = imgUploadForm.querySelector('#upload-file');
-
+const imgPreviewContainer = document.querySelector('.img-upload__preview-container');
+const imgPreview = imgPreviewContainer.querySelector('.img-upload__preview').querySelector('img');
 
 const onDocKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -16,6 +18,8 @@ const onDocKeydown = (evt) => {
     inputFile.value = '';
   }
   removeInputListener();
+  imgUploadForm.removeEventListener('change', filterTypeChange);
+  imgUploadCancel.removeEventListener('click', closeRedactor);
 };
 
 const inputInFocus = () => {
@@ -37,25 +41,27 @@ function removeInputListener () {
   commentInput.removeEventListener('blur', inputOutFocus);
 }
 
+function closeRedactor () {
+  imgOverlay.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  inputFile.value = '';
+  imgPreview.removeAttribute('style');
+  imgPreview.className = 'effects__preview--none';
+  removeInputListener();
+
+  document.removeEventListener('keydown', onDocKeydown);
+  imgUploadForm.removeEventListener('change', filterTypeChange);
+  imgUploadCancel.removeEventListener('click', closeRedactor);
+}
+
 const showRedactor = () => {
   imgOverlay.classList.remove('hidden');
-  document.addEventListener('keydown', onDocKeydown);
   document.body.classList.add('modal-open');
   addInputListener();
+
+  document.addEventListener('keydown', onDocKeydown);
+  imgUploadForm.addEventListener('change', filterTypeChange);
+  imgUploadCancel.addEventListener('click', closeRedactor);
 };
 
 imgUpload.addEventListener('change', showRedactor);
-
-const closeRedactor = () => {
-  imgOverlay.classList.add('hidden');
-  document.removeEventListener('keydown', onDocKeydown);
-  inputFile.value = '';
-  removeInputListener();
-};
-
-imgUploadCancel.addEventListener('click', () => {
-  closeRedactor();
-  document.body.classList.remove('modal-open');
-});
-
-imgUploadCancel.addEventListener('keydown', onDocKeydown);
