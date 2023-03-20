@@ -1,119 +1,90 @@
+const SCALE_STEP = 25;
+const MIN_SCALE_VALUE = 25;
+const MAX_SCALE_VALUE = 100;
+const DECIMAL_SYSTEM = 10;
+const PERSENT = 100;
+const FILTER_EFFECTS = [
+  {name: 'none', filter: 'none', min: 0, max: 100, step: 1},
+  {name: 'chrome', filter: 'grayscale', min: 0, max: 1, step: 0.1, unit: ''},
+  {name: 'sepia', filter: 'sepia', min: 0, max: 1, step: 0.1, unit: ''},
+  {name: 'marvin', filter: 'invert', min: 0, max: 100, step: 1, unit: '%'},
+  {name: 'phobos', filter: 'blur', min: 0, max: 3, step: 0.1, unit: 'px'},
+  {name: 'heat', filter: 'brightness', min: 1, max: 3, step: 0.1, unit: ''}
+];
+export const noneEffect = FILTER_EFFECTS[0];
+export let currentEffect = noneEffect;
 const imgPreviewContainer = document.querySelector('.img-upload__preview-container');
 const sliderContainer = imgPreviewContainer.querySelector('.img-upload__effect-level');
 const sliderElement = imgPreviewContainer.querySelector('.effect-level__slider');
 const valueElement = imgPreviewContainer.querySelector('.effect-level__value');
 const imgPreview = imgPreviewContainer.querySelector('.img-upload__preview').querySelector('img');
-const increaseImgScale = imgPreviewContainer.querySelector('.scale__control--bigger');
-const decreaseImgScale = imgPreviewContainer.querySelector('.scale__control--smaller');
 const scaleValue = imgPreviewContainer.querySelector('.scale__control--value');
-const SCALE_STEP = 25;
 
-const decreaseCurrentScale = () => {
-  if (parseInt(scaleValue.value, 10) > 25) {
-    scaleValue.value = `${parseInt(scaleValue.value, 10) - SCALE_STEP}%`;
-    imgPreview.style.transform = `scale(${parseInt(scaleValue.value, 10) / 100})`;
+const scaleChanging = (operation) => {
+  switch (operation) {
+    case 'increase':
+      if (parseInt(scaleValue.value, DECIMAL_SYSTEM) < MAX_SCALE_VALUE) {
+        scaleValue.value = `${parseInt(scaleValue.value, DECIMAL_SYSTEM) + SCALE_STEP}%`;
+      }
+      break;
+    case 'decrease':
+      if (parseInt(scaleValue.value, DECIMAL_SYSTEM) > MIN_SCALE_VALUE) {
+        scaleValue.value = `${parseInt(scaleValue.value, DECIMAL_SYSTEM) - SCALE_STEP}%`;
+      }
   }
+  imgPreview.style.transform = `scale(${parseInt(scaleValue.value, DECIMAL_SYSTEM) / PERSENT})`;
 };
 
-const increaseCurrentScale = () => {
-  if (parseInt(scaleValue.value, 10) < 100) {
-    scaleValue.value = `${parseInt(scaleValue.value, 10) + SCALE_STEP}%`;
-    imgPreview.style.transform = `scale(${parseInt(scaleValue.value, 10) / 100})`;
-  }
-};
-
-decreaseImgScale.addEventListener('click', decreaseCurrentScale);
-increaseImgScale.addEventListener('click', increaseCurrentScale);
+export const decreaseCurrentScale = () => scaleChanging('decrease');
+export const increaseCurrentScale = () => scaleChanging('increase');
 
 noUiSlider.create(sliderElement, {
   range: {
-    min: 0,
-    max: 100,
+    min: noneEffect.min,
+    max: noneEffect.max,
   },
-  start: 0,
-  step: 10,
+  start: noneEffect.max,
+  step: noneEffect.step,
   connect: 'lower',
 });
 
-function filterValueChange (value) {
-  switch(imgPreview.className) {
-    case 'effects__preview--none':
-      imgPreview.removeAttribute('style');
-      sliderContainer.classList.add('hidden');
-      break;
-    case 'effects__preview--chrome':
-      imgPreview.style.filter = `grayscale(${value})`;
-      sliderContainer.classList.remove('hidden');
-      break;
-    case 'effects__preview--sepia':
-      imgPreview.style.filter = `sepia(${value})`;
-      sliderContainer.classList.remove('hidden');
-      break;
-    case 'effects__preview--marvin':
-      imgPreview.style.filter = `invert(${value}%)`;
-      sliderContainer.classList.remove('hidden');
-      break;
-    case 'effects__preview--phobos':
-      imgPreview.style.filter = `blur(${value}px)`;
-      sliderContainer.classList.remove('hidden');
-      break;
-    case 'effects__preview--heat':
-      imgPreview.style.filter = `brightness(${value})`;
-      sliderContainer.classList.remove('hidden');
-      break;
+const checkIsDefault = () => {
+  if (currentEffect === noneEffect) {
+    sliderContainer.classList.add('hidden');
+    imgPreview.style.filter = 'none';
+  } else {
+    sliderContainer.classList.remove('hidden');
   }
-}
+};
+
+const updateSlider = () => {
+  checkIsDefault();
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: currentEffect.min,
+      max: currentEffect.max,
+    },
+    step: currentEffect.step,
+    start: currentEffect.max,
+  });
+};
+
+export const resetEffects = () => {
+  currentEffect = noneEffect;
+  updateSlider();
+};
 
 export function filterTypeChange (evt) {
-  if (evt.target.closest('input[type="radio"]')) {
-    imgPreview.className = `effects__preview--${evt.target.value}`;
-    imgPreview.style.filter = `${evt.target.value}(${sliderElement.noUiSlider.get()})`;
-  }
-  switch(evt.target.value) {
-    case 'chrome':
-    case 'sepia':
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 1
-        },
-        start: 1,
-        step: 0.1
-      });
-      break;
-    case 'marvin':
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 100
-        },
-        start: 100,
-        step: 1
-      });
-      break;
-    case 'phobos':
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 3
-        },
-        start: 3,
-        step: 0.1
-      });
-      break;
-    case 'heat':
-      sliderElement.noUiSlider.updateOptions({
-        range: {
-          min: 1,
-          max: 3
-        },
-        start: 3,
-        step: 0.1
-      });
+  if (evt.target.classList.contains('effects__radio')) {
+    const effectsID = evt.target.value;
+    imgPreview.className = `effects__preview--${effectsID}`;
+    currentEffect = FILTER_EFFECTS.find((effect) => effect.name === effectsID);
+    updateSlider();
   }
 
   sliderElement.noUiSlider.on('update', () => {
     valueElement.value = sliderElement.noUiSlider.get();
-    filterValueChange(sliderElement.noUiSlider.get());
+    // filterValueChange(sliderElement.noUiSlider.get());
+    imgPreview.style.filter = `${currentEffect.filter}(${valueElement.value}${currentEffect.unit})`;
   });
 }
