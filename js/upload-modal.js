@@ -1,4 +1,5 @@
 import {isEscapeKey} from './util.js';
+import {filterTypeChange, decreaseCurrentScale, increaseCurrentScale, resetEffects, imgPreview} from './slider.js';
 export const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUpload = imgUploadForm.querySelector('#upload-file');
 const imgOverlay = imgUploadForm.querySelector('.img-upload__overlay');
@@ -6,16 +7,24 @@ const imgUploadCancel = imgUploadForm.querySelector('.img-upload__cancel');
 const hashtagInput = imgUploadForm.querySelector('.text__hashtags');
 const commentInput = imgUploadForm.querySelector('.text__description');
 const inputFile = imgUploadForm.querySelector('#upload-file');
-
+const imgPreviewContainer = document.querySelector('.img-upload__preview-container');
+const increaseImgScale = imgPreviewContainer.querySelector('.scale__control--bigger');
+const decreaseImgScale = imgPreviewContainer.querySelector('.scale__control--smaller');
 
 const onDocKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     imgOverlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    inputFile.value = '';
+    document.getElementById('upload-select-image').reset();
+    resetEffects();
+    imgPreview.style.transform = 'none';
   }
   removeInputListener();
+  decreaseImgScale.removeEventListener('click', decreaseCurrentScale);
+  increaseImgScale.removeEventListener('click', increaseCurrentScale);
+  imgUploadForm.removeEventListener('change', filterTypeChange);
+  imgUploadCancel.removeEventListener('click', closeRedactor);
 };
 
 const inputInFocus = () => {
@@ -37,25 +46,32 @@ function removeInputListener () {
   commentInput.removeEventListener('blur', inputOutFocus);
 }
 
+function closeRedactor () {
+  imgOverlay.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  inputFile.value = '';
+  imgPreview.style.transform = 'none';
+
+  resetEffects();
+  removeInputListener();
+
+  document.removeEventListener('keydown', onDocKeydown);
+  decreaseImgScale.removeEventListener('click', decreaseCurrentScale);
+  increaseImgScale.removeEventListener('click', increaseCurrentScale);
+  imgUploadForm.removeEventListener('change', filterTypeChange);
+  imgUploadCancel.removeEventListener('click', closeRedactor);
+}
+
 const showRedactor = () => {
   imgOverlay.classList.remove('hidden');
-  document.addEventListener('keydown', onDocKeydown);
   document.body.classList.add('modal-open');
   addInputListener();
+
+  document.addEventListener('keydown', onDocKeydown);
+  decreaseImgScale.addEventListener('click', decreaseCurrentScale);
+  increaseImgScale.addEventListener('click', increaseCurrentScale);
+  imgUploadForm.addEventListener('change', filterTypeChange);
+  imgUploadCancel.addEventListener('click', closeRedactor);
 };
 
 imgUpload.addEventListener('change', showRedactor);
-
-const closeRedactor = () => {
-  imgOverlay.classList.add('hidden');
-  document.removeEventListener('keydown', onDocKeydown);
-  inputFile.value = '';
-  removeInputListener();
-};
-
-imgUploadCancel.addEventListener('click', () => {
-  closeRedactor();
-  document.body.classList.remove('modal-open');
-});
-
-imgUploadCancel.addEventListener('keydown', onDocKeydown);

@@ -18,6 +18,8 @@ const onDocumentKeydown = (evt) => {
     bigPicture.classList.add('hidden');
     document.body.classList.remove('modal-open');
     loadCommentsButton.classList.remove('hidden');
+    closeBigPicture.removeEventListener('click', closePhoto);
+    closeBigPicture.removeEventListener('keydown', closePhotoByEnter);
   }
 };
 
@@ -46,6 +48,22 @@ const loadComments = () => {
   }
 };
 
+function closePhoto () {
+  bigPicture.classList.add('hidden');
+  document.removeEventListener('keydown', onDocumentKeydown);
+  loadCommentsButton.removeEventListener('click', loadComments);
+  closeBigPicture.removeEventListener('click', closePhoto);
+  closeBigPicture.removeEventListener('keydown', closePhotoByEnter);
+  document.body.classList.remove('modal-open');
+  loadCommentsButton.classList.remove('hidden');
+}
+
+function closePhotoByEnter (evt) {
+  if (isEnterKey(evt)) {
+    closePhoto();
+  }
+}
+
 const onPhotoClick = (evt) => {
   if (evt.target.closest('.picture')) {
     const target = evt.target.closest('.picture');
@@ -57,7 +75,10 @@ const onPhotoClick = (evt) => {
     bigPictureComments.textContent = currentDescription.comments.length;
     photoCaption.textContent = currentDescription.description;
     document.body.classList.add('modal-open');
+
     loadCommentsButton.addEventListener('click', loadComments);
+    closeBigPicture.addEventListener('click', closePhoto);
+    closeBigPicture.addEventListener('keydown', closePhotoByEnter);
 
     clearComments();
     createComment(currentDescription.comments, commentsContainer);
@@ -66,23 +87,3 @@ const onPhotoClick = (evt) => {
 };
 
 picContainer.addEventListener('click', onPhotoClick);
-
-const closePhoto = () => {
-  bigPicture.classList.add('hidden');
-  document.removeEventListener('keydown', onDocumentKeydown);
-  loadCommentsButton.removeEventListener('click', loadComments);
-};
-
-closeBigPicture.addEventListener('click', () => {
-  closePhoto();
-  document.body.classList.remove('modal-open');
-  loadCommentsButton.classList.remove('hidden');
-});
-
-closeBigPicture.addEventListener('keydown', (evt) => {
-  if (isEnterKey(evt)) {
-    closePhoto();
-  }
-  document.body.classList.remove('modal-open');
-  loadCommentsButton.classList.remove('hidden');
-});
