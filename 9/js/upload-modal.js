@@ -1,5 +1,5 @@
 import {isEscapeKey} from './util.js';
-import {filterTypeChange, decreaseCurrentScale, increaseCurrentScale, resetEffects} from './slider.js';
+import {filterTypeChange, decreaseCurrentScale, increaseCurrentScale, resetEffects, imgPreview} from './slider.js';
 export const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUpload = imgUploadForm.querySelector('#upload-file');
 const imgOverlay = imgUploadForm.querySelector('.img-upload__overlay');
@@ -18,6 +18,7 @@ const onDocKeydown = (evt) => {
     document.body.classList.remove('modal-open');
     document.getElementById('upload-select-image').reset();
     resetEffects();
+    imgPreview.style.transform = 'none';
   }
   removeInputListener();
   decreaseImgScale.removeEventListener('click', decreaseCurrentScale);
@@ -49,6 +50,8 @@ function closeRedactor () {
   imgOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   inputFile.value = '';
+  imgPreview.style.transform = 'none';
+
   resetEffects();
   removeInputListener();
 

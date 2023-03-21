@@ -17,7 +17,7 @@ const imgPreviewContainer = document.querySelector('.img-upload__preview-contain
 const sliderContainer = imgPreviewContainer.querySelector('.img-upload__effect-level');
 const sliderElement = imgPreviewContainer.querySelector('.effect-level__slider');
 const valueElement = imgPreviewContainer.querySelector('.effect-level__value');
-const imgPreview = imgPreviewContainer.querySelector('.img-upload__preview').querySelector('img');
+export const imgPreview = imgPreviewContainer.querySelector('.img-upload__preview').querySelector('img');
 const scaleValue = imgPreviewContainer.querySelector('.scale__control--value');
 
 const scaleChanging = (operation) => {
