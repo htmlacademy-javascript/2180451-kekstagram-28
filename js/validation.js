@@ -1,7 +1,14 @@
-import {imgUploadForm} from './upload-modal.js';
+import {imgUploadForm, closeRedactor} from './upload-modal.js';
+import {showAlert} from './util.js';
+import {sendData} from './api.js';
+const submitPost = document.querySelector('#upload-submit');
 const HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_MAX_COUNT = 5;
 const COMMENT_MAX_LENGTH = 140;
+const submitPostText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую'
+};
 
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__text',
@@ -55,8 +62,30 @@ pristine.addValidator(
   'допустимое количество символов равно 140'
 );
 
-imgUploadForm.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
+const blockSubmitButton = () => {
+  submitPost.disabled = true;
+  submitPost.textContent = submitPostText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  submitPost.disabled = false;
+  submitPost.textContent = submitPostText.IDLE;
+};
+
+export const setUserFormSubmit = (onSuccess) => {
+  imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  }
-});
+
+    if (pristine.validate()) {
+      blockSubmitButton();
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .catch((err) => {
+          showAlert(err.message);
+        })
+        .finally(unblockSubmitButton);
+    }
+  });
+};
+
+setUserFormSubmit(closeRedactor);

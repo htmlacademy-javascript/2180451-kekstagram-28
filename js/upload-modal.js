@@ -1,7 +1,8 @@
 import {isEscapeKey} from './util.js';
 import {filterTypeChange, decreaseCurrentScale, increaseCurrentScale, resetEffects, imgPreview} from './slider.js';
+import { loadPreview } from './upload-img-preview.js';
 export const imgUploadForm = document.querySelector('.img-upload__form');
-const imgUpload = imgUploadForm.querySelector('#upload-file');
+export const imgUploadFile = imgUploadForm.querySelector('#upload-file');
 const imgOverlay = imgUploadForm.querySelector('.img-upload__overlay');
 const imgUploadCancel = imgUploadForm.querySelector('.img-upload__cancel');
 const hashtagInput = imgUploadForm.querySelector('.text__hashtags');
@@ -46,7 +47,7 @@ function removeInputListener () {
   commentInput.removeEventListener('blur', inputOutFocus);
 }
 
-function closeRedactor () {
+export function closeRedactor () {
   imgOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   inputFile.value = '';
@@ -66,7 +67,7 @@ const showRedactor = () => {
   imgOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
   addInputListener();
-
+  loadPreview();
   document.addEventListener('keydown', onDocKeydown);
   decreaseImgScale.addEventListener('click', decreaseCurrentScale);
   increaseImgScale.addEventListener('click', increaseCurrentScale);
@@ -74,4 +75,4 @@ const showRedactor = () => {
   imgUploadCancel.addEventListener('click', closeRedactor);
 };
 
-imgUpload.addEventListener('change', showRedactor);
+imgUploadFile.addEventListener('change', showRedactor);
