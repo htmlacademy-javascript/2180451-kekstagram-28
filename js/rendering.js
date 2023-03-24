@@ -1,4 +1,3 @@
-import {renderBigPhoto} from './render-fullscreen.js';
 export const picContainer = document.querySelector('.pictures');
 const picTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const similarDescriptionsFragment = document.createDocumentFragment();
@@ -15,5 +14,4 @@ export const createElements = (descriptionData) => {
   });
 
   picContainer.append(similarDescriptionsFragment);
-  renderBigPhoto(descriptionData);
 };

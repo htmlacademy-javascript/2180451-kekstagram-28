@@ -1,13 +1,12 @@
 import {createElements} from './rendering.js';
+import {renderBigPhoto} from './render-fullscreen.js';
 import {showAlert} from './util.js';
 import {getData} from './api.js';
-import './upload-modal.js';
-import './validation.js';
-import './slider.js';
 
 getData()
   .then((requestData) => {
     createElements(requestData);
+    renderBigPhoto(requestData);
   })
   .catch((err) => {
     showAlert(err.message);

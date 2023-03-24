@@ -1,6 +1,7 @@
-import {imgUploadForm, closeRedactor} from './upload-modal.js';
-import {showAlert} from './util.js';
-// import {sendData} from './api.js';
+import {imgUploadForm} from './upload-modal.js';
+import {sendData} from './api.js';
+
+const hashtagInput = imgUploadForm.querySelector('.text__hashtags');
 const submitPost = document.querySelector('#upload-submit');
 const HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_MAX_COUNT = 5;
@@ -15,7 +16,6 @@ const pristine = new Pristine(imgUploadForm, {
   errorClass: 'img-upload__text--invalid',
   successClass: 'img-upload__text--valid',
   errorTextParent: 'img-upload__text',
-  errorTextTag: 'span',
   errorTextClass: 'img-upload__error'
 });
 
@@ -39,19 +39,19 @@ function validateComment (value) {
 }
 
 pristine.addValidator(
-  imgUploadForm.querySelector('.text__hashtags'),
+  hashtagInput,
   validateHashtag,
   'Неверный хештег. хештеги должны разделяться пробелом'
 );
 
 pristine.addValidator(
-  imgUploadForm.querySelector('.text__hashtags'),
+  hashtagInput,
   validateHashtagCount,
   'Допустимое количество хештегов равно 5'
 );
 
 pristine.addValidator(
-  imgUploadForm.querySelector('.text__hashtags'),
+  hashtagInput,
   validateHashtagDublicates,
   'использованы одинаковые хештеги'
 );
@@ -67,36 +67,20 @@ const blockSubmitButton = () => {
   submitPost.textContent = submitPostText.SENDING;
 };
 
-const unblockSubmitButton = () => {
+export const unblockSubmitButton = () => {
   submitPost.disabled = false;
   submitPost.textContent = submitPostText.IDLE;
 };
 
-// export const setUserFormSubmit = (onSuccess) => {
-imgUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+export const setUserFormSubmit = () => {
+  imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
 
-  if (pristine.validate()) {
-    blockSubmitButton();
-    const formData = new FormData(evt.target);
+    if (pristine.validate()) {
+      blockSubmitButton();
+      sendData(new FormData(evt.target));
+    }
+  });
+};
 
-    fetch('https://28.javascript.pages.academy/kekstagram', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((Response) => {
-        if (Response.ok) {
-          closeRedactor();
-        } else {
-          throw new Error();
-        }
-      })
-      .catch(() => {
-        showAlert('Не удалось отправить форму. Попробуйте ещё раз');
-      })
-      .finally(unblockSubmitButton);
-  }
-});
-// };
-
-// setUserForwmSubmit(closeRedactor);
+setUserFormSubmit();
