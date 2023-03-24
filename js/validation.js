@@ -1,6 +1,6 @@
 import {imgUploadForm, closeRedactor} from './upload-modal.js';
 import {showAlert} from './util.js';
-import {sendData} from './api.js';
+// import {sendData} from './api.js';
 const submitPost = document.querySelector('#upload-submit');
 const HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_MAX_COUNT = 5;
@@ -72,20 +72,31 @@ const unblockSubmitButton = () => {
   submitPost.textContent = submitPostText.IDLE;
 };
 
-export const setUserFormSubmit = (onSuccess) => {
-  imgUploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
+// export const setUserFormSubmit = (onSuccess) => {
+imgUploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
 
-    if (pristine.validate()) {
-      blockSubmitButton();
-      sendData(new FormData(evt.target))
-        .then(onSuccess)
-        .catch((err) => {
-          showAlert(err.message);
-        })
-        .finally(unblockSubmitButton);
-    }
-  });
-};
+  if (pristine.validate()) {
+    blockSubmitButton();
+    const formData = new FormData(evt.target);
 
-setUserFormSubmit(closeRedactor);
+    fetch('https://28.javascript.pages.academy/kekstagram/data', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((Response) => {
+        if (Response.ok) {
+          closeRedactor();
+        } else {
+          throw new Error();
+        }
+      })
+      .catch((err) => {
+        showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+      })
+      .finally(unblockSubmitButton);
+  }
+});
+// };
+
+// setUserForwmSubmit(closeRedactor);
