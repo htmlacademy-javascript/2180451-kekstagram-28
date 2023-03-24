@@ -80,7 +80,7 @@ imgUploadForm.addEventListener('submit', (evt) => {
     blockSubmitButton();
     const formData = new FormData(evt.target);
 
-    fetch('https://28.javascript.pages.academy/kekstagram/data', {
+    fetch('https://28.javascript.pages.academy/kekstagram', {
       method: 'POST',
       body: formData,
     })
