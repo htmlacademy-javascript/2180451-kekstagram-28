@@ -91,7 +91,7 @@ imgUploadForm.addEventListener('submit', (evt) => {
           throw new Error();
         }
       })
-      .catch((err) => {
+      .catch(() => {
         showAlert('Не удалось отправить форму. Попробуйте ещё раз');
       })
       .finally(unblockSubmitButton);
