@@ -4,7 +4,7 @@ import {unblockSubmitButton} from './validation.js';
 import {uploadSuccess, uploadError} from './upload-state.js';
 
 const SERVER_URL_GET_DATA = 'https://28.javascript.pages.academy/kekstagram/data';
-const SERVER_URL_POST = 'https://28.javascript.pages.academy/kekstagram';
+const SERVER_URL_POST = 'https://28.javascript.pages.academy/kekstagra';
 
 const errorText = 'Не удалось загрузить данные. Попробуйте обновить страницу.';
 
