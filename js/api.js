@@ -1,9 +1,10 @@
 import {closeRedactor} from './upload-modal.js';
 import {showAlert} from './util.js';
 import {unblockSubmitButton} from './validation.js';
+import {uploadSuccess, uploadError} from './upload-state.js';
 
 const SERVER_URL_GET_DATA = 'https://28.javascript.pages.academy/kekstagram/data';
-const SERVER_URL_POST = 'https://28.javascript.pages.academy/kekstagram';
+const SERVER_URL_POST = 'https://28.javascript.pages.academy/kekstagra';
 
 const errorText = {
   GET_DATA: 'Не удалось загрузить данные. Попробуйте обновить страницу.',
@@ -30,13 +31,14 @@ export const sendData = (body) => {
     .then((response) => {
       if (response.ok) {
         closeRedactor();
+        uploadSuccess();
       } else {
-        throw new Error();
+        throw new Error(uploadError);
       }
       return response.json();
     })
     .catch(() => {
-      showAlert(errorText.SEND_DATA);
+      uploadError();
     })
     .finally(unblockSubmitButton);
 };

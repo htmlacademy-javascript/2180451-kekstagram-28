@@ -3,6 +3,7 @@ import {sendData} from './api.js';
 
 const hashtagInput = imgUploadForm.querySelector('.text__hashtags');
 const submitPost = document.querySelector('#upload-submit');
+
 const HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_MAX_COUNT = 5;
 const COMMENT_MAX_LENGTH = 140;
