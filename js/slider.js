@@ -84,7 +84,6 @@ export function filterTypeChange (evt) {
 
   sliderElement.noUiSlider.on('update', () => {
     valueElement.value = sliderElement.noUiSlider.get();
-    // filterValueChange(sliderElement.noUiSlider.get());
     imgPreview.style.filter = `${currentEffect.filter}(${valueElement.value}${currentEffect.unit})`;
   });
 }

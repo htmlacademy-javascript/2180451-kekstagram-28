@@ -4,12 +4,9 @@ import {unblockSubmitButton} from './validation.js';
 import {uploadSuccess, uploadError} from './upload-state.js';
 
 const SERVER_URL_GET_DATA = 'https://28.javascript.pages.academy/kekstagram/data';
-const SERVER_URL_POST = 'https://28.javascript.pages.academy/kekstagra';
+const SERVER_URL_POST = 'https://28.javascript.pages.academy/kekstagram';
 
-const errorText = {
-  GET_DATA: 'Не удалось загрузить данные. Попробуйте обновить страницу.',
-  SEND_DATA: 'Не удалось отправить форму. Попробуйте ещё раз.'
-};
+const errorText = 'Не удалось загрузить данные. Попробуйте обновить страницу.';
 
 export const getData = () => fetch(SERVER_URL_GET_DATA)
   .then((response) => {
@@ -20,7 +17,7 @@ export const getData = () => fetch(SERVER_URL_GET_DATA)
     }
   })
   .catch(() => {
-    throw new Error(errorText.GET_DATA);
+    showAlert(errorText);
   });
 
 export const sendData = (body) => {
@@ -29,12 +26,11 @@ export const sendData = (body) => {
     body,
   })
     .then((response) => {
-      if (response.ok) {
-        closeRedactor();
-        uploadSuccess();
-      } else {
-        throw new Error(uploadError);
+      if (!response.ok) {
+        throw new Error();
       }
+      closeRedactor();
+      uploadSuccess();
       return response.json();
     })
     .catch(() => {

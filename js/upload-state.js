@@ -12,6 +12,11 @@ export const uploadSuccess = () => {
   document.body.append(successMessage);
   const successButton = document.querySelector('.success__button');
   successButton.addEventListener('click', closeSuccessMessage);
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      document.querySelector('.success').remove();
+    }
+  });
 };
 
 const closeErrorMessage = () => {
@@ -22,4 +27,9 @@ export const uploadError = () => {
   document.body.append(errorMessage);
   const errorButton = document.querySelector('.error__button');
   errorButton.addEventListener('click', closeErrorMessage);
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      document.querySelector('.error').remove();
+    }
+  });
 };
