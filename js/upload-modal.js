@@ -12,7 +12,7 @@ const imgPreviewContainer = document.querySelector('.img-upload__preview-contain
 const increaseImgScale = imgPreviewContainer.querySelector('.scale__control--bigger');
 const decreaseImgScale = imgPreviewContainer.querySelector('.scale__control--smaller');
 
-const onDocKeydown = (evt) => {
+export const onDocKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     imgOverlay.classList.add('hidden');
