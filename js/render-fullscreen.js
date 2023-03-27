@@ -1,5 +1,4 @@
 import {isEscapeKey, isEnterKey, createComment} from './util.js';
-import {descriptionData} from './main.js';
 import { picContainer } from './rendering.js';
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
@@ -64,26 +63,28 @@ function closePhotoByEnter (evt) {
   }
 }
 
-const onPhotoClick = (evt) => {
-  if (evt.target.closest('.picture')) {
-    const target = evt.target.closest('.picture');
-    const currentDescription = descriptionData.find((item) => item.id === Number(target.dataset.id));
-    bigPicture.classList.remove('hidden');
-    document.addEventListener('keydown', onDocumentKeydown);
-    bigPictureImg.src = currentDescription.url;
-    bigPictureLikes.textContent = currentDescription.likes;
-    bigPictureComments.textContent = currentDescription.comments.length;
-    photoCaption.textContent = currentDescription.description;
-    document.body.classList.add('modal-open');
+export const renderBigPhoto = (data) => {
+  const onPhotoClick = (evt) => {
+    if (evt.target.closest('.picture')) {
+      const target = evt.target.closest('.picture');
+      const currentDescription = data.find((item) => item.id === Number(target.dataset.id));
+      bigPicture.classList.remove('hidden');
+      document.addEventListener('keydown', onDocumentKeydown);
+      bigPictureImg.src = currentDescription.url;
+      bigPictureLikes.textContent = currentDescription.likes;
+      bigPictureComments.textContent = currentDescription.comments.length;
+      photoCaption.textContent = currentDescription.description;
+      document.body.classList.add('modal-open');
 
-    loadCommentsButton.addEventListener('click', loadComments);
-    closeBigPicture.addEventListener('click', closePhoto);
-    closeBigPicture.addEventListener('keydown', closePhotoByEnter);
+      loadCommentsButton.addEventListener('click', loadComments);
+      closeBigPicture.addEventListener('click', closePhoto);
+      closeBigPicture.addEventListener('keydown', closePhotoByEnter);
 
-    clearComments();
-    createComment(currentDescription.comments, commentsContainer);
-    loadComments();
-  }
+      clearComments();
+      createComment(currentDescription.comments, commentsContainer);
+      loadComments();
+    }
+  };
+
+  picContainer.addEventListener('click', onPhotoClick);
 };
-
-picContainer.addEventListener('click', onPhotoClick);

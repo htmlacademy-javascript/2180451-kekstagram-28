@@ -1,14 +1,22 @@
 import {imgUploadForm} from './upload-modal.js';
+import {sendData} from './api.js';
+
+const hashtagInput = imgUploadForm.querySelector('.text__hashtags');
+const submitPost = document.querySelector('#upload-submit');
+
 const HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_MAX_COUNT = 5;
 const COMMENT_MAX_LENGTH = 140;
+const submitPostText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую'
+};
 
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__text',
   errorClass: 'img-upload__text--invalid',
   successClass: 'img-upload__text--valid',
   errorTextParent: 'img-upload__text',
-  errorTextTag: 'span',
   errorTextClass: 'img-upload__error'
 });
 
@@ -32,19 +40,19 @@ function validateComment (value) {
 }
 
 pristine.addValidator(
-  imgUploadForm.querySelector('.text__hashtags'),
+  hashtagInput,
   validateHashtag,
   'Неверный хештег. хештеги должны разделяться пробелом'
 );
 
 pristine.addValidator(
-  imgUploadForm.querySelector('.text__hashtags'),
+  hashtagInput,
   validateHashtagCount,
   'Допустимое количество хештегов равно 5'
 );
 
 pristine.addValidator(
-  imgUploadForm.querySelector('.text__hashtags'),
+  hashtagInput,
   validateHashtagDublicates,
   'использованы одинаковые хештеги'
 );
@@ -55,8 +63,25 @@ pristine.addValidator(
   'допустимое количество символов равно 140'
 );
 
-imgUploadForm.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
+const blockSubmitButton = () => {
+  submitPost.disabled = true;
+  submitPost.textContent = submitPostText.SENDING;
+};
+
+export const unblockSubmitButton = () => {
+  submitPost.disabled = false;
+  submitPost.textContent = submitPostText.IDLE;
+};
+
+export const setUserFormSubmit = () => {
+  imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  }
-});
+
+    if (pristine.validate()) {
+      blockSubmitButton();
+      sendData(new FormData(evt.target));
+    }
+  });
+};
+
+setUserFormSubmit();
