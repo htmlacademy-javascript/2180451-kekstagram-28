@@ -12,7 +12,7 @@ const imgPreviewContainer = document.querySelector('.img-upload__preview-contain
 const increaseImgScale = imgPreviewContainer.querySelector('.scale__control--bigger');
 const decreaseImgScale = imgPreviewContainer.querySelector('.scale__control--smaller');
 
-const onDocKeydown = (evt) => {
+export const onDocKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     imgOverlay.classList.add('hidden');
@@ -68,7 +68,6 @@ const showRedactor = () => {
   document.body.classList.add('modal-open');
   addInputListener();
   loadPreview();
-  document.addEventListener('keydown', onDocKeydown);
   decreaseImgScale.addEventListener('click', decreaseCurrentScale);
   increaseImgScale.addEventListener('click', increaseCurrentScale);
   imgUploadForm.addEventListener('change', filterTypeChange);
