@@ -66,8 +66,11 @@ export function closeRedactor () {
 const showRedactor = () => {
   imgOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
+
   addInputListener();
   loadPreview();
+
+  document.addEventListener('keydown', onDocKeydown);
   decreaseImgScale.addEventListener('click', decreaseCurrentScale);
   increaseImgScale.addEventListener('click', increaseCurrentScale);
   imgUploadForm.addEventListener('change', filterTypeChange);

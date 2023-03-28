@@ -25,7 +25,7 @@ export const uploadSuccess = () => {
   document.removeEventListener('keydown', onDocKeydown);
   document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
-      successModal('.success').remove();
+      successModal.remove();
       document.addEventListener('keydown', onDocKeydown);
     }
   });
