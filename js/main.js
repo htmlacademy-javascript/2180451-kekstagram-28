@@ -1,9 +1,16 @@
-import {createElements} from './rendering.js';
+import {renderGallery} from './rendering.js';
 import {renderBigPhoto} from './render-fullscreen.js';
 import {getData} from './api.js';
+import {debounce, showAlert} from './util.js';
+import {init, getFilteredPictures} from './rendering.js';
+const RERENDER_DELAY = 500;
 
-getData()
-  .then((requestData) => {
-    createElements(requestData);
-    renderBigPhoto(requestData);
-  });
+try {
+  const data = await getData();
+  const debouncedRenderGallery = debounce(renderGallery, RERENDER_DELAY);
+  init(data, debouncedRenderGallery);
+  renderGallery(getFilteredPictures());
+  renderBigPhoto(getFilteredPictures());
+} catch (err) {
+  showAlert(err.message);
+}

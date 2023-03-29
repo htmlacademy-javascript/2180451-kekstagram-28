@@ -2,8 +2,6 @@ import {isEscapeKey} from './util.js';
 import {onDocKeydown} from './upload-modal.js';
 const successMessageTemplate = document.querySelector('#success').content;
 const errorMessageTemplate = document.querySelector('#error').content;
-const successMessage = successMessageTemplate.cloneNode(true);
-const errorMessage = errorMessageTemplate.cloneNode(true);
 
 const onClickCloseModal = (evt) => {
   if (evt.target.matches('.success')) {
@@ -18,6 +16,7 @@ const closeSuccessMessage = () => {
 };
 
 export const uploadSuccess = () => {
+  const successMessage = successMessageTemplate.cloneNode(true);
   document.body.append(successMessage);
   const successModal = document.querySelector('.success');
   const successButton = document.querySelector('.success__button');
@@ -26,7 +25,7 @@ export const uploadSuccess = () => {
   document.removeEventListener('keydown', onDocKeydown);
   document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
-      document.querySelector('.success').remove();
+      successModal.remove();
       document.addEventListener('keydown', onDocKeydown);
     }
   });
@@ -37,6 +36,7 @@ const closeErrorMessage = () => {
 };
 
 export const uploadError = () => {
+  const errorMessage = errorMessageTemplate.cloneNode(true);
   document.body.append(errorMessage);
   const errorModal = document.querySelector('.error');
   const errorButton = document.querySelector('.error__button');
@@ -45,7 +45,7 @@ export const uploadError = () => {
   document.removeEventListener('keydown', onDocKeydown);
   document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
-      document.querySelector('.error').remove();
+      errorModal.remove();
       document.addEventListener('keydown', onDocKeydown);
     }
   });
