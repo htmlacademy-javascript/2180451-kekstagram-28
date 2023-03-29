@@ -11,10 +11,11 @@ const Filter = {
   DISCUSSED: 'filter-discussed'
 };
 const PICTURE_COUNT = 10;
+const SORT_NUMBER = 0.5;
 let descriptionDataFiltered = [];
 let currentFilter = Filter.DEFAULT;
 
-const randomSort = () => Math.random() - 0.5;
+const randomSort = () => Math.random() - SORT_NUMBER;
 
 const discussedSort = (a, b) => b.comments.length - a.comments.length;
 
