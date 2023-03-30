@@ -3,6 +3,7 @@ import {renderBigPhoto} from './render-fullscreen.js';
 import {getData} from './api.js';
 import {debounce, showAlert} from './util.js';
 import {init, getFilteredPictures} from './rendering.js';
+import './upload-img-preview.js';
 const RERENDER_DELAY = 500;
 
 try {

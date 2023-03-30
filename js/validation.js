@@ -25,6 +25,11 @@ function validateHashtag (value) {
   return !value.length ? true : hashArray.every((hashtag) => HASHTAG.test(hashtag));
 }
 
+function validateHashtagSpaces (value) {
+  const hashArray = value.split(' ');
+  return !hashArray.every((hashtag) => hashtag.includes('#', 1));
+}
+
 function validateHashtagCount (value) {
   const hashArray = value.split(' ');
   return hashArray.length <= HASHTAG_MAX_COUNT;
@@ -42,7 +47,13 @@ function validateComment (value) {
 pristine.addValidator(
   hashtagInput,
   validateHashtag,
-  'Неверный хештег. хештеги должны разделяться пробелом'
+  'Неверный хештег'
+);
+
+pristine.addValidator(
+  hashtagInput,
+  validateHashtagSpaces,
+  'хештеги должны разделяться пробелом'
 );
 
 pristine.addValidator(

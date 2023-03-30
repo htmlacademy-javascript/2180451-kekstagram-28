@@ -1,6 +1,5 @@
 import {isEscapeKey} from './util.js';
 import {filterTypeChange, decreaseCurrentScale, increaseCurrentScale, resetEffects, imgPreview} from './slider.js';
-import { loadPreview } from './upload-img-preview.js';
 export const imgUploadForm = document.querySelector('.img-upload__form');
 export const imgUploadFile = imgUploadForm.querySelector('#upload-file');
 const imgOverlay = imgUploadForm.querySelector('.img-upload__overlay');
@@ -68,7 +67,6 @@ const showRedactor = () => {
   document.body.classList.add('modal-open');
 
   addInputListener();
-  loadPreview();
 
   document.addEventListener('keydown', onDocKeydown);
   decreaseImgScale.addEventListener('click', decreaseCurrentScale);
