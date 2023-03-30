@@ -21,17 +21,17 @@ const pristine = new Pristine(imgUploadForm, {
 });
 
 function validateHashtag (value) {
-  const hashArray = value.split(' ');
+  const hashArray = value.trim().split(' ');
   return !value.length ? true : hashArray.every((hashtag) => HASHTAG.test(hashtag));
 }
 
 function validateHashtagSpaces (value) {
-  const hashArray = value.split(' ');
+  const hashArray = value.trim().split(' ');
   return !hashArray.every((hashtag) => hashtag.includes('#', 1));
 }
 
 function validateHashtagCount (value) {
-  const hashArray = value.split(' ');
+  const hashArray = value.trim().split(' ');
   return hashArray.length <= HASHTAG_MAX_COUNT;
 }
 
