@@ -1,12 +1,13 @@
 import {imgPreview} from './slider.js';
 import {imgUploadFile} from './upload-modal.js';
-const fileReader = new FileReader();
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-fileReader.onload = (evt) => {
-  imgPreview.src = evt.target.result;
-};
-
-export const loadPreview = () => {
+imgUploadFile.addEventListener('change', () => {
   const file = imgUploadFile.files[0];
-  fileReader.readAsDataURL(file);
-};
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    imgPreview.src = URL.createObjectURL(file);
+  }
+});
