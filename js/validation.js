@@ -1,9 +1,6 @@
 import {imgUploadForm} from './upload-modal.js';
 import {sendData} from './api.js';
 
-const hashtagInput = imgUploadForm.querySelector('.text__hashtags');
-const submitPost = document.querySelector('#upload-submit');
-
 const HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_MAX_COUNT = 5;
 const COMMENT_MAX_LENGTH = 140;
@@ -11,6 +8,10 @@ const submitPostText = {
   IDLE: 'Опубликовать',
   SENDING: 'Публикую'
 };
+
+const hashtagInput = imgUploadForm.querySelector('.text__hashtags');
+const commentInput = imgUploadForm.querySelector('.text__description');
+const submitPost = document.querySelector('#upload-submit');
 
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -47,7 +48,7 @@ function validateComment (value) {
 pristine.addValidator(
   hashtagInput,
   validateHashtag,
-  'Неверный хештег'
+  'неверный хештег'
 );
 
 pristine.addValidator(
@@ -59,7 +60,7 @@ pristine.addValidator(
 pristine.addValidator(
   hashtagInput,
   validateHashtagCount,
-  'Допустимое количество хештегов равно 5'
+  'допустимое количество хештегов равно 5'
 );
 
 pristine.addValidator(
@@ -69,7 +70,7 @@ pristine.addValidator(
 );
 
 pristine.addValidator(
-  imgUploadForm.querySelector('.text__description'),
+  commentInput,
   validateComment,
   'допустимое количество символов равно 140'
 );

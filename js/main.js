@@ -13,5 +13,5 @@ try {
   renderGallery(getFilteredPictures());
   renderBigPhoto(getFilteredPictures());
 } catch (err) {
-  showAlert(err.message);
+  showAlert();
 }

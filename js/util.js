@@ -1,27 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
-
-export const getRandomInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
-export const getRandomValue = (min, max) => {
-  const previousValue = [];
-
-  return function () {
-    let currentValue = getRandomInteger(min, max);
-    if (previousValue.length >= (max - min + 1)) {
-      return null;
-    }
-    while (previousValue.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-    previousValue.push(currentValue);
-    return currentValue;
-  };
-};
+const MESSAGE = 'Не удалось загрузить фотографии. Попробуйте перезагрузить страницу.';
 
 export const isEscapeKey = (evt) => evt.key === 'Escape';
 export const isEnterKey = (evt) => evt.key === 'Enter';
@@ -49,7 +27,7 @@ export const createComment = (arr, container) => {
   });
 };
 
-export const showAlert = (message) => {
+export const showAlert = () => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
   alertContainer.style.position = 'absolute';
@@ -57,11 +35,11 @@ export const showAlert = (message) => {
   alertContainer.style.top = '0';
   alertContainer.style.right = '0';
   alertContainer.style.padding = '30px 20px';
-  alertContainer.style.fontSize = '30px';
+  alertContainer.style.fontSize = '24px';
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = 'red';
 
-  alertContainer.textContent = message;
+  alertContainer.textContent = MESSAGE;
 
   document.body.append(alertContainer);
 
@@ -77,29 +55,3 @@ export const debounce = (callback, timeoutDelay) => {
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
 };
-
-
-const getStringLength = (stringValue, maxLength) => String(stringValue).length <= maxLength;
-
-getStringLength('five', 4);
-
-const isPalindrome = (stringValue) => String(stringValue) === String(stringValue).split('').reverse().join('');
-
-isPalindrome('cannac');
-
-const findNumber = (stringValue) => parseInt(String(stringValue).replace(/[^\d]/g, ''), 10);
-
-findNumber('0 hello 123 gkdfdkffk443');
-
-const addSymbol = (string, length, symbol) => {
-  while (string.length < length) {
-    if (symbol.length <= length - string.length) {
-      string = symbol + string;
-    }
-    string = symbol.slice(0, length - string.length) + string;
-  }
-  return string;
-};
-
-addSymbol('horse', 14, 'white');
-

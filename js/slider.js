@@ -2,7 +2,7 @@ const SCALE_STEP = 25;
 const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
 const DECIMAL_SYSTEM = 10;
-const PERSENT = 100;
+const PERСENT = 100;
 const FILTER_EFFECTS = [
   {name: 'none', filter: 'none', min: 0, max: 100, step: 1},
   {name: 'chrome', filter: 'grayscale', min: 0, max: 1, step: 0.1, unit: ''},
@@ -11,16 +11,17 @@ const FILTER_EFFECTS = [
   {name: 'phobos', filter: 'blur', min: 0, max: 3, step: 0.1, unit: 'px'},
   {name: 'heat', filter: 'brightness', min: 1, max: 3, step: 0.1, unit: ''}
 ];
-export const noneEffect = FILTER_EFFECTS[0];
-export let currentEffect = noneEffect;
-const imgPreviewContainer = document.querySelector('.img-upload__preview-container');
+const noneEffect = FILTER_EFFECTS[0];
+let currentEffect = noneEffect;
+
+export const imgPreviewContainer = document.querySelector('.img-upload__preview-container');
+export const imgPreview = imgPreviewContainer.querySelector('.img-upload__preview').querySelector('img');
 const sliderContainer = imgPreviewContainer.querySelector('.img-upload__effect-level');
 const sliderElement = imgPreviewContainer.querySelector('.effect-level__slider');
 const valueElement = imgPreviewContainer.querySelector('.effect-level__value');
-export const imgPreview = imgPreviewContainer.querySelector('.img-upload__preview').querySelector('img');
 const scaleValue = imgPreviewContainer.querySelector('.scale__control--value');
 
-const scaleChanging = (operation) => {
+const scaleChange = (operation) => {
   switch (operation) {
     case 'increase':
       if (parseInt(scaleValue.value, DECIMAL_SYSTEM) < MAX_SCALE_VALUE) {
@@ -32,11 +33,11 @@ const scaleChanging = (operation) => {
         scaleValue.value = `${parseInt(scaleValue.value, DECIMAL_SYSTEM) - SCALE_STEP}%`;
       }
   }
-  imgPreview.style.transform = `scale(${parseInt(scaleValue.value, DECIMAL_SYSTEM) / PERSENT})`;
+  imgPreview.style.transform = `scale(${parseInt(scaleValue.value, DECIMAL_SYSTEM) / PERСENT})`;
 };
 
-export const decreaseCurrentScale = () => scaleChanging('decrease');
-export const increaseCurrentScale = () => scaleChanging('increase');
+export const onDecreaseScaleButtonClick = () => scaleChange('decrease');
+export const onIncreaseScaleButtonClick = () => scaleChange('increase');
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -74,7 +75,7 @@ export const resetEffects = () => {
   updateSlider();
 };
 
-export function filterTypeChange (evt) {
+export function onFilterChangeTypeClick (evt) {
   if (evt.target.classList.contains('effects__radio')) {
     const effectsID = evt.target.value;
     imgPreview.className = `effects__preview--${effectsID}`;

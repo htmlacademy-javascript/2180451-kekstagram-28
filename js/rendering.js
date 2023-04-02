@@ -1,19 +1,19 @@
-export const picContainer = document.querySelector('.pictures');
-const picTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const similarDescriptionsFragment = document.createDocumentFragment();
-const imgFiltersForm = document.querySelector('.img-filters__form');
-const filterButtons = imgFiltersForm.querySelectorAll('.img-filters__button');
-const imgFilters = document.querySelector('.img-filters');
-
+const PICTURE_COUNT = 10;
+const SORT_NUMBER = 0.5;
 const Filter = {
   DEFAULT: 'filter-default',
   RANDOM: 'filter-random',
   DISCUSSED: 'filter-discussed'
 };
-const PICTURE_COUNT = 10;
-const SORT_NUMBER = 0.5;
 let descriptionDataFiltered = [];
 let currentFilter = Filter.DEFAULT;
+
+export const picContainer = document.querySelector('.pictures');
+const picTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const imgFiltersForm = document.querySelector('.img-filters__form');
+const filterButtons = imgFiltersForm.querySelectorAll('.img-filters__button');
+const imgFilters = document.querySelector('.img-filters');
+const similarDescriptionsFragment = document.createDocumentFragment();
 
 const randomSort = () => Math.random() - SORT_NUMBER;
 

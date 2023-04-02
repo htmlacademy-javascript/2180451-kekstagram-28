@@ -1,5 +1,5 @@
 import {isEscapeKey} from './util.js';
-import {filterTypeChange, decreaseCurrentScale, increaseCurrentScale, resetEffects, imgPreview} from './slider.js';
+import {onFilterChangeTypeClick, onDecreaseScaleButtonClick, onIncreaseScaleButtonClick, resetEffects, imgPreview, imgPreviewContainer} from './slider.js';
 export const imgUploadForm = document.querySelector('.img-upload__form');
 export const imgUploadFile = imgUploadForm.querySelector('#upload-file');
 const imgOverlay = imgUploadForm.querySelector('.img-upload__overlay');
@@ -7,9 +7,8 @@ const imgUploadCancel = imgUploadForm.querySelector('.img-upload__cancel');
 const hashtagInput = imgUploadForm.querySelector('.text__hashtags');
 const commentInput = imgUploadForm.querySelector('.text__description');
 const inputFile = imgUploadForm.querySelector('#upload-file');
-const imgPreviewContainer = document.querySelector('.img-upload__preview-container');
-const increaseImgScale = imgPreviewContainer.querySelector('.scale__control--bigger');
-const decreaseImgScale = imgPreviewContainer.querySelector('.scale__control--smaller');
+const increaseScaleButton = imgPreviewContainer.querySelector('.scale__control--bigger');
+const decreaseScaleButton = imgPreviewContainer.querySelector('.scale__control--smaller');
 
 export const onDocKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -18,35 +17,36 @@ export const onDocKeydown = (evt) => {
     document.body.classList.remove('modal-open');
     document.getElementById('upload-select-image').reset();
     resetEffects();
+    document.removeEventListener('keydown', onDocKeydown);
     imgPreview.style.transform = 'none';
   }
   removeInputListener();
-  decreaseImgScale.removeEventListener('click', decreaseCurrentScale);
-  increaseImgScale.removeEventListener('click', increaseCurrentScale);
-  imgUploadForm.removeEventListener('change', filterTypeChange);
-  imgUploadCancel.removeEventListener('click', closeRedactor);
+  decreaseScaleButton.removeEventListener('click', onDecreaseScaleButtonClick);
+  increaseScaleButton.removeEventListener('click', onIncreaseScaleButtonClick);
+  imgUploadForm.removeEventListener('change', onFilterChangeTypeClick);
+  imgUploadCancel.removeEventListener('click', onCancelUploadClick);
 };
 
-const inputInFocus = () => {
+const inputInFocusHandler = () => {
   document.removeEventListener('keydown', onDocKeydown);
 };
-const inputOutFocus = () => {
+const inputOutFocusHandler = () => {
   document.addEventListener('keydown', onDocKeydown);
 };
 const addInputListener = () => {
-  hashtagInput.addEventListener('focus', inputInFocus);
-  commentInput.addEventListener('focus', inputInFocus);
-  hashtagInput.addEventListener('blur', inputOutFocus);
-  commentInput.addEventListener('blur', inputOutFocus);
+  hashtagInput.addEventListener('focus', inputInFocusHandler);
+  commentInput.addEventListener('focus', inputInFocusHandler);
+  hashtagInput.addEventListener('blur', inputOutFocusHandler);
+  commentInput.addEventListener('blur', inputOutFocusHandler);
 };
 function removeInputListener () {
-  hashtagInput.removeEventListener('focus', inputInFocus);
-  commentInput.removeEventListener('focus', inputInFocus);
-  hashtagInput.removeEventListener('blur', inputOutFocus);
-  commentInput.removeEventListener('blur', inputOutFocus);
+  hashtagInput.removeEventListener('focus', inputInFocusHandler);
+  commentInput.removeEventListener('focus', inputInFocusHandler);
+  hashtagInput.removeEventListener('blur', inputOutFocusHandler);
+  commentInput.removeEventListener('blur', inputOutFocusHandler);
 }
 
-export function closeRedactor () {
+export function onCancelUploadClick () {
   imgOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   inputFile.value = '';
@@ -56,23 +56,23 @@ export function closeRedactor () {
   removeInputListener();
 
   document.removeEventListener('keydown', onDocKeydown);
-  decreaseImgScale.removeEventListener('click', decreaseCurrentScale);
-  increaseImgScale.removeEventListener('click', increaseCurrentScale);
-  imgUploadForm.removeEventListener('change', filterTypeChange);
-  imgUploadCancel.removeEventListener('click', closeRedactor);
+  decreaseScaleButton.removeEventListener('click', onDecreaseScaleButtonClick);
+  increaseScaleButton.removeEventListener('click', onIncreaseScaleButtonClick);
+  imgUploadForm.removeEventListener('change', onFilterChangeTypeClick);
+  imgUploadCancel.removeEventListener('click', onCancelUploadClick);
 }
 
-const showRedactor = () => {
+const onUploadImgClick = () => {
   imgOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
   addInputListener();
 
   document.addEventListener('keydown', onDocKeydown);
-  decreaseImgScale.addEventListener('click', decreaseCurrentScale);
-  increaseImgScale.addEventListener('click', increaseCurrentScale);
-  imgUploadForm.addEventListener('change', filterTypeChange);
-  imgUploadCancel.addEventListener('click', closeRedactor);
+  decreaseScaleButton.addEventListener('click', onDecreaseScaleButtonClick);
+  increaseScaleButton.addEventListener('click', onIncreaseScaleButtonClick);
+  imgUploadForm.addEventListener('change', onFilterChangeTypeClick);
+  imgUploadCancel.addEventListener('click', onCancelUploadClick);
 };
 
-imgUploadFile.addEventListener('change', showRedactor);
+imgUploadFile.addEventListener('change', onUploadImgClick);

@@ -1,4 +1,4 @@
-import {closeRedactor} from './upload-modal.js';
+import {onCancelUploadClick} from './upload-modal.js';
 import {showAlert} from './util.js';
 import {unblockSubmitButton} from './validation.js';
 import {uploadSuccess, uploadError} from './upload-state.js';
@@ -10,11 +10,10 @@ const errorText = 'Не удалось загрузить данные. Попр
 
 export const getData = () => fetch(SERVER_URL_GET_DATA)
   .then((response) => {
-    if (response.ok) {
-      return response.json();
-    } else {
+    if (!response.ok) {
       throw new Error();
     }
+    return response.json();
   })
   .catch(() => {
     showAlert(errorText);
@@ -29,7 +28,7 @@ export const sendData = (body) => {
       if (!response.ok) {
         throw new Error();
       }
-      closeRedactor();
+      onCancelUploadClick();
       uploadSuccess();
       return response.json();
     })
