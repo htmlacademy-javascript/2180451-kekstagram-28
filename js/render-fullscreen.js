@@ -65,7 +65,7 @@ function onEnterKeydown (evt) {
   }
 }
 
-export const renderBigPhoto = (data) => {
+export const renderFullScreenPhoto = (data) => {
   const onMiniatureClick = (evt) => {
     if (evt.target.closest('.picture')) {
       const target = evt.target.closest('.picture');
