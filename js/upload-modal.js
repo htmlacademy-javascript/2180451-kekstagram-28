@@ -27,23 +27,23 @@ export const onDocKeydown = (evt) => {
   imgUploadCancel.removeEventListener('click', onCancelUploadClick);
 };
 
-const inputInFocusHandler = () => {
+const onInputFocused = () => {
   document.removeEventListener('keydown', onDocKeydown);
 };
-const inputOutFocusHandler = () => {
+const onInputUnfocused = () => {
   document.addEventListener('keydown', onDocKeydown);
 };
 const addInputListener = () => {
-  hashtagInput.addEventListener('focus', inputInFocusHandler);
-  commentInput.addEventListener('focus', inputInFocusHandler);
-  hashtagInput.addEventListener('blur', inputOutFocusHandler);
-  commentInput.addEventListener('blur', inputOutFocusHandler);
+  hashtagInput.addEventListener('focus', onInputFocused);
+  commentInput.addEventListener('focus', onInputFocused);
+  hashtagInput.addEventListener('blur', onInputUnfocused);
+  commentInput.addEventListener('blur', onInputUnfocused);
 };
 function removeInputListener () {
-  hashtagInput.removeEventListener('focus', inputInFocusHandler);
-  commentInput.removeEventListener('focus', inputInFocusHandler);
-  hashtagInput.removeEventListener('blur', inputOutFocusHandler);
-  commentInput.removeEventListener('blur', inputOutFocusHandler);
+  hashtagInput.removeEventListener('focus', onInputFocused);
+  commentInput.removeEventListener('focus', onInputFocused);
+  hashtagInput.removeEventListener('blur', onInputUnfocused);
+  commentInput.removeEventListener('blur', onInputUnfocused);
 }
 
 export function onCancelUploadClick () {

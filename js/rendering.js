@@ -5,7 +5,7 @@ const Filter = {
   RANDOM: 'filter-random',
   DISCUSSED: 'filter-discussed'
 };
-let descriptionDataFiltered = [];
+let filteredDescriptionsData = [];
 let currentFilter = Filter.DEFAULT;
 
 export const picContainer = document.querySelector('.pictures');
@@ -15,18 +15,18 @@ const filterButtons = imgFiltersForm.querySelectorAll('.img-filters__button');
 const imgFilters = document.querySelector('.img-filters');
 const similarDescriptionsFragment = document.createDocumentFragment();
 
-const randomSort = () => Math.random() - SORT_NUMBER;
+const sortRandomly = () => Math.random() - SORT_NUMBER;
 
-const discussedSort = (a, b) => b.comments.length - a.comments.length;
+const sortByMostDiscussed = (a, b) => b.comments.length - a.comments.length;
 
 export const getFilteredPictures = () => {
   switch (currentFilter) {
     case Filter.RANDOM:
-      return [...descriptionDataFiltered].sort(randomSort).slice(0, PICTURE_COUNT);
+      return [...filteredDescriptionsData].sort(sortRandomly).slice(0, PICTURE_COUNT);
     case Filter.DISCUSSED:
-      return [...descriptionDataFiltered].sort(discussedSort);
+      return [...filteredDescriptionsData].sort(sortByMostDiscussed);
     default:
-      return [...descriptionDataFiltered];
+      return [...filteredDescriptionsData];
   }
 };
 
@@ -58,6 +58,6 @@ export const setOnFilterClick = (cb) => {
 
 export const init = (loadedPictures, cb) => {
   imgFilters.classList.remove('img-filters--inactive');
-  descriptionDataFiltered = [...loadedPictures];
+  filteredDescriptionsData = [...loadedPictures];
   setOnFilterClick(cb);
 };

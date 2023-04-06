@@ -1,5 +1,5 @@
 import {renderGallery} from './rendering.js';
-import {renderBigPhoto} from './render-fullscreen.js';
+import {renderFullScreenPhoto} from './render-fullscreen.js';
 import {getData} from './api.js';
 import {debounce, showAlert} from './util.js';
 import {init, getFilteredPictures} from './rendering.js';
@@ -11,7 +11,7 @@ try {
   const debouncedRenderGallery = debounce(renderGallery, RERENDER_DELAY);
   init(data, debouncedRenderGallery);
   renderGallery(getFilteredPictures());
-  renderBigPhoto(getFilteredPictures());
+  renderFullScreenPhoto(getFilteredPictures());
 } catch (err) {
   showAlert();
 }
