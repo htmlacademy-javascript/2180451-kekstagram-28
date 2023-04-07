@@ -16,6 +16,7 @@ const onErrorStateKeydown = (evt) => {
     const errorModal = document.querySelector('.error');
     errorModal.remove();
     document.removeEventListener('keydown', onErrorStateKeydown);
+    document.addEventListener('keydown', onDocKeydown);
   }
 };
 
@@ -25,6 +26,8 @@ const onOutStateModalClick = (evt) => {
     document.removeEventListener('keydown', onSuccessStateKeydown);
   } else if (evt.target.matches('.error')) {
     document.querySelector('.error').remove();
+    document.removeEventListener('keydown', onErrorStateKeydown);
+    document.addEventListener('keydown', onDocKeydown);
   }
 };
 
@@ -33,7 +36,7 @@ const onSuccessButtonClick = () => {
   document.removeEventListener('keydown', onSuccessStateKeydown);
 };
 
-export const uploadSuccess = () => {
+export const showSuccessMessage = () => {
   const successMessage = successMessageTemplate.cloneNode(true);
   document.body.append(successMessage);
   const successModal = document.querySelector('.success');
@@ -47,9 +50,10 @@ export const uploadSuccess = () => {
 const onErrorButtonClick = () => {
   document.querySelector('.error').remove();
   document.removeEventListener('keydown', onErrorStateKeydown);
+  document.addEventListener('keydown', onDocKeydown);
 };
 
-export const uploadError = () => {
+export const showErrorMessage = () => {
   const errorMessage = errorMessageTemplate.cloneNode(true);
   document.body.append(errorMessage);
   const errorModal = document.querySelector('.error');
