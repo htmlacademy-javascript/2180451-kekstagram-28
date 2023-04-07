@@ -1,7 +1,7 @@
 import {onCancelUploadClick} from './upload-modal.js';
 import {showAlert} from './util.js';
 import {unblockSubmitButton} from './validation.js';
-import {uploadSuccess, uploadError} from './upload-state.js';
+import {showErrorMessage, showSuccessMessage} from './upload-state.js';
 
 const SERVER_URL_GET_DATA = 'https://28.javascript.pages.academy/kekstagram/data';
 const SERVER_URL_POST = 'https://28.javascript.pages.academy/kekstagram';
@@ -29,11 +29,11 @@ export const sendData = (body) => {
         throw new Error();
       }
       onCancelUploadClick();
-      uploadSuccess();
+      showSuccessMessage();
       return response.json();
     })
     .catch(() => {
-      uploadError();
+      showErrorMessage();
     })
     .finally(unblockSubmitButton);
 };
